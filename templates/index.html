@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Multimodal Prediction Service</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        div {
+            margin-bottom: 15px;
+        }
+        label {
+            display: inline-block;
+            margin-right: 10px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="file"] {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type="radio"] {
+            margin-right: 5px;
+        }
+        #combined_data_upload {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+        input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        h2 {
+            color: #28a745;
+            margin-top: 20px;
+            text-align: center;
+        }
+        p[style*="color: red;"] {
+            color: #dc3545;
+            margin-top: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Multimodal Prediction Service</h1>
+
+    <form method="POST" action="/predict" enctype="multipart/form-data">
+        <div>
+            <input type="radio" id="combined_data" name="upload_option" value="combined_data" checked>
+            <label for="combined_data">Upload Preprocessed Combined Data CSV</label><br>
+        </div>
+
+        <div id="combined_data_upload">
+            <label for="preprocessed_combined">Preprocessed Combined Clinical, Biospecimen, and Image Feature CSV:</label>
+            <input type="file" name="preprocessed_combined" required><br><br>
+        </div>
+
+        <input type="submit" value="Predict">
+    </form>
+
+    {% if prediction %}
+        <h2>Prediction: {{ prediction }}</h2>
+    {% endif %}
+
+    {% if error %}
+        <p style="color: red;">Error: {{ error }}</p>
+    {% endif %}
+
+    <script>
+        // Immediately show only the combined data upload section and check its radio button
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('combined_data').checked = true;
+            document.getElementById('combined_data_upload').style.display = 'block';
+            const threeFilesDiv = document.getElementById('three_files_upload');
+            if (threeFilesDiv) threeFilesDiv.style.display = 'none';
+            const twoFilesDiv = document.getElementById('two_files_upload');
+            if (twoFilesDiv) twoFilesDiv.style.display = 'none';
+        });
+    </script>
+
+</body>
+</html>
