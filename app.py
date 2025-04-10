@@ -179,7 +179,7 @@ def index():
 @app.route('/predict', methods=['POST'])
 def predict():
     if model is None:
-        return "Prediction output: 1 (alive)"
+        return "Module Not Found Error"
 
     preprocessed_combined_file = request.files.get('preprocessed_combined')
 
