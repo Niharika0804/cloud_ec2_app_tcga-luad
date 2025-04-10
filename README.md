@@ -131,48 +131,6 @@ This guide outlines the steps to deploy the Multimodal Cancer Outcome Prediction
 8.  **Access Your Application:**
     * Open your web browser and go to the **Public IP address** or the **Public DNS name** of your EC2 instance. You should see your "Multimodal Prediction Service" web interface.
 
-## Managing the Application (Production Considerations)
-
-* **Screen or Systemd:** To keep your application running even after you close your SSH session, use tools like `screen` or `systemd`.
-    * **Screen:**
-        ```bash
-        sudo apt install screen
-        screen -S myapp
-        # Run your gunicorn command here
-        # Press Ctrl+A then Ctrl+D to detach from the screen session
-        screen -r myapp # To re-attach
-        ```
-    * **Systemd:** Create a service unit file (e.g., `/etc/systemd/system/myapp.service`):
-        ```ini
-        [Unit]
-        Description=Multimodal Prediction Application
-        After=network.target
-
-        [Service]
-        User=ubuntu
-        WorkingDirectory=/home/ubuntu/your_repository_name
-        ExecStart=/home/ubuntu/your_repository_name/venv/bin/gunicorn --bind 0.0.0.0:80 app:app
-        Restart=on-failure
-
-        [Install]
-        WantedBy=multi-user.target
-        ```
-        Then enable and start the service:
-        ```bash
-        sudo systemctl daemon-reload
-        sudo systemctl enable myapp.service
-        sudo systemctl start myapp.service
-        sudo systemctl status myapp.service
-        ```
-* **Logging:** Configure proper logging for your Flask application and Gunicorn to monitor its health and troubleshoot issues.
-* **Security:**
-    * Consider implementing HTTPS using Let's Encrypt.
-    * Regularly update your system packages.
-    * Review and restrict security group rules.
-    * Consider using a Web Application Firewall (WAF).
-* **Monitoring:** Set up monitoring tools (e.g., AWS CloudWatch) to track your instance's resource utilization and application performance.
-* **Scalability:** For higher traffic, consider using load balancers and auto-scaling groups.
-
 ## Accessing the Web Interface
 
 Once Gunicorn is running (either directly or through `screen`/`systemd`), you should be able to access your web application by navigating to the **Public IP address** or **Public DNS name** of your EC2 instance in your web browser.
